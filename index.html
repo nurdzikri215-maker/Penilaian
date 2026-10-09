@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepulang Coffee — Rate Our Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset Dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Body dengan Gradien Hangat */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            /* Gradien warna kopi: Dark Roast ke Creamy Brown */
+            background: linear-gradient(135deg, #1a1411 0%, #4a3b32 100%);
+            color: #f7f4ef;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Container Utama dengan Efek Glassmorphism */
+        .container {
+            /* Warna semi-transparan dengan efek buram */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 50px 35px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+
+        /* Efek Lingkaran Cahaya Estetik di Background */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 200px;
+            height: 200px;
+            /* Warna aksen emas lembut */
+            background: rgba(245, 158, 11, 0.08);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        /* Styling Lingkaran Logo Maskot */
+        .brand-logo {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 28px auto;
+            background: #ffffff; /* Latar belakang logo putih bersih */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover effect pada logo */
+        .brand-logo:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* Gambar Maskot Sepulang Coffee */
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Memastikan maskot tidak gepeng */
+            padding: 15px; /* Memberi ruang napas maskot di dalam lingkaran */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+
+        /* Tipografi Judul */
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Tipografi Subjudul */
+        p {
+            color: #d1c9c2;
+            font-size: 15px;
+            margin-bottom: 35px;
+        }
+
+        /* Area Pilihan Bintang */
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        /* Styling Bintang Default */
+        .star {
+            font-size: 44px;
+            color: rgba(255, 255, 255, 0.2); /* Bintang redup estetik */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Mencegah teks tersorot saat diklik cepat */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Efek Hover dan Aktif pada Bintang */
+        .star:hover,
+        .star.active {
+            color: #f59e0b; /* Warna emas khas */
+            transform: scale(1.3) translateY(-3px);
+            filter: drop-shadow(0 5px 10px rgba(245, 158, 11, 0.5));
+        }
+
+        /* Area Tersembunyi (Form Masukan dan Tombol Kirim) */
+        .hidden-section {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in;
+            margin-top: 0;
+        }
+
+        /* Saat area masukan ditampilkan */
+        .hidden-section.show {
+            max-height: 300px;
+            opacity: 1;
+            margin-top: 10px;
+        }
+
+        /* Kotak Masukan Teks */
+        textarea {
+            width: 100%;
+            height: 110px;
+            padding: 15px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2); /* Sedikit lebih gelap agar kontras */
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 20px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        /* Fokus pada kotak teks */
+        textarea:focus {
+            border-color: #f59e0b;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Placeholder estetik */
+        textarea::placeholder {
+            color: #a19993;
+        }
+
+        /* Tombol Kirim Estetik */
+        .btn {
+            background: #ffffff; /* Tombol putih bersih */
+            color: #1a1411; /* Teks gelap */
+            border: none;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Hover effect pada tombol */
+        .btn:hover {
+            background: #f0eae5;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Efek saat tombol diklik */
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Footer Brand */
+        .footer-text {
+            margin-top: 35px;
+            font-size: 11px;
+            color: #8a7f77;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Responsif untuk layar sangat kecil */
+        @media (max-width: 380px) {
+            .container { padding: 40px 25px; }
+            .brand-logo { width: 110px; height: 110px; }
+            h1 { font-size: 22px; }
+            .star { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Bagian Logo Brand: Maskot Maskot Sepulang Coffee -->
+    <div class="brand-logo">
+        <!-- Ganti 'logo.png' dengan nama file maskot Anda yang estetik -->
+        <img src="logo.png" alt="Sepulang Coffee Maskot" onerror="this.style.display='none'">
+        <!-- Jika gambar gagal, teks ini akan muncul, tapi pastikan 'logo.png' terupload -->
+        <span style="color: #1a1411; font-weight: 900; font-size: 16px; display: none;" id="fallbackText">SEPULANG</span>
+    </div>
+
+    <h1>Bagaimana Pengalaman Anda?</h1>
+    <p>Bantu kami meracik momen yang lebih baik di Sepulang Coffee ☕✨</p>
+    
+    <!-- Area Rating Bintang -->
+    <div class="stars" id="starContainer">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+    </div>
+
+    <!-- Area Tersembunyi (Masukan dan Tombol WA/Google) -->
+    <div class="hidden-section" id="hiddenSection">
+        <textarea id="feedback" placeholder="Ceritakan apa yang kurang nyaman agar kami bisa berbenah..."></textarea>
+        <button class="btn" id="submitBtn" onclick="kirimUlasan()">Kirim Masukan ke WhatsApp</button>
+    </div>
+
+    <div class="footer-text">Powered by Sepulang Coffee Experience</div>
+</div>
+
+<script>
+    let selectedRating = 0;
+    const stars = document.querySelectorAll('.star');
+    const hiddenSection = document.getElementById('hiddenSection');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Logika Interaksi Bintang
+    stars.forEach((star, index1) => {
+        star.addEventListener('click', () => {
+            selectedRating = index1 + 1;
+            
+            // Animasi sorot bintang
+            stars.forEach((s, index2) => {
+                if (index2 <= index1) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+
+            // Logika Saringan Rating (UI Only)
+            if (selectedRating <= 3) {
+                // Bintang 1-3: Tampilkan form untuk dikirim privat ke WhatsApp Owner
+                hiddenSection.classList.add('show');
+                submitBtn.innerText = 'Kirim Masukan ke WhatsApp';
+            } else {
+                // Bintang 4-5: Langsung sembunyikan form dan arahkan ke Google Review
+                hiddenSection.classList.remove('show');
+                // Beri sedikit jeda animasi sebelum pindah halaman
+                setTimeout(() => {
+                    window.location.href = 'https://reviewthis.biz/crimson-breeze-4681';
+                }, 300);
+            }
+        });
+    });
+
+    // Logika Pengiriman Data (WA/Google)
+    function kirimUlasan() {
+        if (selectedRating <= 3) {
+            // Kumpulkan pesan dan kirim ke WhatsApp Owner
+            let pesan = document.getElementById('feedback').value;
+            let noWaOwner = "6281532513894"; // Nomor WA yang Anda berikan
+            let textWa = encodeURIComponent(`Halo Owner Sepulang Coffee,\n\nSaya baru saja berkunjung dan memberikan rating ${selectedRating} bintang.\n\nMasukan/Kritik saya:\n${pesan}`);
+            window.location.href = `https://wa.me/${noWaOwner}?text=${textWa}`;
+        } else {
+            // Ini seharusnya tidak terpanggil karena sudah tertangani di atas, tapi untuk keamanan:
+            window.location.href = 'https://reviewthis.biz/crimson-breeze-4681';
+        }
+    }
+</script>
+
+</body>
+</html>
