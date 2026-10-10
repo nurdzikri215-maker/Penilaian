@@ -300,7 +300,7 @@
         if (selectedRating <= 3) {
             // Kumpulkan pesan dan kirim ke WhatsApp Owner
             let pesan = document.getElementById('feedback').value;
-            let noWaOwner = "6282141132140"; // Nomor WA yang Anda berikan
+            let noWaOwner = "62881026199898"; // Nomor WA yang Anda berikan
             let textWa = encodeURIComponent(`Halo Owner Sepulang Coffee,\n\nSaya baru saja berkunjung dan memberikan rating ${selectedRating} bintang.\n\nMasukan/Kritik saya:\n${pesan}`);
             window.location.href = `https://wa.me/${noWaOwner}?text=${textWa}`;
         } else {
